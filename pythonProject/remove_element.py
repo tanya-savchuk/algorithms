@@ -72,7 +72,7 @@ class Solution:
                 i = i + 1
             k = k + 1             
             n2check = n2check - 1
-        # if the lst element is not a dupe, add to the array
+        # if the last element is not a dupe, add to the array
         if nums[k-1] != nums[k]:                      
             nums[i] = nums[k] 
             i = i + 1  
