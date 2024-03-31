@@ -62,14 +62,21 @@ class Solution:
         It does not matter what you leave beyond the returned k (hence they are underscores).
         """
         k = 0
-        n2check = len(nums)
-        n = nums[0]
-        while n2check > 0:
-            if nums[k] != nums[k+1]:
-                k = k + 1
+        i = 0 # write at index
+        n2check = len(nums) - 1         
+        while n2check > 0:            
+            if nums[k] == nums[k+1]:
+                 pass                       
             else:
-                dup = nums[k]
-        return k
+                nums[i] = nums[k]
+                i = i + 1
+            k = k + 1             
+            n2check = n2check - 1
+        # if the lst element is not a dupe, add to the array
+        if nums[k-1] != nums[k]:                      
+            nums[i] = nums[k] 
+            i = i + 1  
+        return i
 
     if __name__ == '__main__':
         nums = [0, 1, 2, 2, 3, 0, 4, 2]
@@ -77,3 +84,8 @@ class Solution:
         n = remove_element(nums, val)
         print('n = ', n)
         print('nums = ', nums)
+
+        nums = [0,0,1,1,1,2,2,3,3,4]
+        n = remove_duplicates(nums)
+        print('n = ', n)
+        print('nums = ', nums[0:n])
