@@ -77,14 +77,21 @@ class Solution:
             nums[i] = nums[k] 
             i = i + 1  
         return i
+    
+    @staticmethod
+    def remove_duplicates2(self, nums: List[int]) -> int:
+        """
+        Input: nums = [1,1,1,2,2,3]
+        Output: 5, nums = [1,1,2,2,3,_]
+        Explanation: Your function should return k = 5, with the first five elements of nums being 1, 1, 2, 2 and 3 respectively.
+        It does not matter what you leave beyond the returned k (hence they are underscores).
+        """
+        i = 0
+        return i    
+
 
     if __name__ == '__main__':
-        nums = [0, 1, 2, 2, 3, 0, 4, 2]
-        val = 2
-        n = remove_element(nums, val)
-        print('n = ', n)
-        print('nums = ', nums)
-
+        
         nums = [0,0,1,1,1,2,2,3,3,4]
         n = remove_duplicates(nums)
         print('n = ', n)
