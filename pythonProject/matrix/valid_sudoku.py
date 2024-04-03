@@ -57,16 +57,19 @@ class Solution:
             for jtem in val_dict[item]:
                 tmp = val_dict[item][jtem]
                 if len( set(tmp) ) != len( tmp ):
+                    print('Invalid board. There is a {} with more than one {}'.format(jtem, item ))
                     return False
 
         return True
     
     def isValidSudoku(board: List[List[str]]) -> bool:
         """
-        same as above, but without dictionary
+        same as above, but without dictionary.
         storing board in an array of tuples
         [(element, row_idx), (col_idx, element), (element, row_idx, col_idx)]
         then compare len( set (resulting array) ) to len(resulting array)    
+
+        O(N) solution
         """
         res = []
         for i in range(0,9):
