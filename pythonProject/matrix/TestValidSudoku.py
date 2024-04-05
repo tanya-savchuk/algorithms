@@ -78,6 +78,8 @@ class Tests(unittest.TestCase):
         actual = Solution.isValidSudoku(board)
         expected = False
 
+        self.assertEqual(actual, expected)
+
     def test_is_valid_sudoku_5(self):
         # duplicates in column
         board = \
@@ -96,6 +98,8 @@ class Tests(unittest.TestCase):
         actual = Solution.isValidSudoku(board)
         expected = False
 
+        self.assertEqual(actual, expected)
+
     def test_is_valid_sudoku_6(self):
         # duplicates in square
         board = \
@@ -113,6 +117,8 @@ class Tests(unittest.TestCase):
         
         actual = Solution.isValidSudoku(board)
         expected = False
+
+        self.assertEqual(actual, expected)
 
 
 
