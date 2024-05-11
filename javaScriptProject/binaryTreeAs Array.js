@@ -4,30 +4,32 @@ function whatBranchIsBigger(tree){
     
     // start and end  are indices of nodes on a level
     // since it's a binary tree, each level has double of nodes from the previous one
-    var start = 1;
-    var end = 2*start + 1;
-    var halfPoint = (end - start)/2;
-    var left = 0;
-    var right = 0;
-    var missingNode = -1;    
-    while (start < end) {    
+    var startIdxLevel = 1;
+    var numElementsLevel = 2*startIdxLevel + 1;
+    // number of elements on the level for each branch    
+    var numElementsBranch = (numElementsLevel - startIdxLevel)/2;
+    var leftTreeSum = 0;
+    var rightTreeSum = 0;
+    var missingNodeMarker = -1;    
+    while (startIdxLevel < numElementsLevel) {    
         // process level
-        for (var i = start; i < start + halfPoint; i++){   
-            var leftNode = tree[i] == missingNode ? 0 : tree[i];
-            left = left + leftNode;
+        for (var i = startIdxLevel; i < startIdxLevel + numElementsBranch; i++){   
+            var leftNode = tree[i] == missingNodeMarker ? 0 : tree[i];
+            leftTreeSum = leftTreeSum + leftNode;
 
-            var rightNode = (tree[halfPoint+i] == missingNode || tree[halfPoint+i] == undefined) ? 0 : tree[halfPoint+i];
-            right = right + rightNode;
+            var rightNode = (tree[numElementsBranch+i] == missingNodeMarker || numElementsBranch+i >= tree.length) ? 0 : tree[numElementsBranch+i];
+            rightTreeSum = rightTreeSum + rightNode;
         }
-        start = end;    
-        halfPoint = (start + 1)/2;
-        end = 2*end > tree.length ? tree.length : 2*end+1;           
+        startIdxLevel = numElementsLevel;
+        //numElementsBranch = (2*start index + 1 - start index)/2    
+        numElementsBranch = (startIdxLevel + 1)/2;
+        numElementsLevel = 2*numElementsLevel > tree.length ? tree.length : 2*numElementsLevel+1;           
     }
 
-    if ( left > right ) {
+    if ( leftTreeSum > rightTreeSum ) {
         return "left";
     }
-    else if ( right > left ) {
+    else if ( rightTreeSum > leftTreeSum ) {
         return "right";
     }
     else {
