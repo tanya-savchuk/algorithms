@@ -1,27 +1,21 @@
 import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.StdRandom;
-import edu.princeton.cs.algs4.StdStats;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 public class Percolation {
 
-    public int[][] grid;
-    public int n;
-    public int top;
-    public int bottom;
-    public WeightedQuickUnionUF wq;
+    private int[][] grid;
+    private int n;
+    private int top;
+    private int bottom;
+    private WeightedQuickUnionUF wq;
 
-    public int blockedMarker = 0;
-    public int openMarker = 1;
+    private int blockedMarker = 0;
+    private int openMarker = 1;
+    private int numOpen;
 
     // creates n-by-n grid, with all sites initially blocked
-    public Percolation(int N) {
-        n = N;
+    public Percolation(int n) {
+        this.n = n;
         if (n <= 0) throw new IllegalArgumentException("n is less than zero");
         grid = new int[n + 1][n + 1];
         // for (int i = 1; i < n + 1; i++) {
@@ -33,6 +27,7 @@ public class Percolation {
         // open top and bottom virtual nodes
         top = openMarker;
         bottom = openMarker;
+        numOpen = 0;
 
         wq = new WeightedQuickUnionUF(n * n + 2);
     }
@@ -44,7 +39,7 @@ public class Percolation {
     private void checkValidIndex(int... args) {
         for (int arg : args) {
             if (arg <= 0 || arg > n) {
-                throw new IndexOutOfBoundsException("index " + arg + " is out of bounds");
+                throw new IllegalArgumentException("index " + arg + " is out of bounds");
             }
         }
     }
@@ -62,7 +57,10 @@ public class Percolation {
     // opens the site (row, col) if it is not open already
     public void open(int row, int col) {
         checkValidIndex(row, col);
-        grid[row][col] = openMarker;
+        if (grid[row][col] != openMarker) {
+            grid[row][col] = openMarker;
+            numOpen++;
+        }
         int nodeWqIdx = xyTo1D(row, col);
         int neighborWqIdx;
         int neighborRow;
@@ -125,13 +123,13 @@ public class Percolation {
     // in the top row via a chain of neighboring
     // (left, right, up, down) open sites.
     public boolean isFull(int row, int col) {
+        checkValidIndex(row,col);
         int nodeWqIdx = xyTo1D(row, col);
         return wq.find(nodeWqIdx) == wq.find(0);
     }
 
     // returns the number of open sites
     public int numberOfOpenSites() {
-        int numOpen = 0;
         return numOpen;
     }
 
