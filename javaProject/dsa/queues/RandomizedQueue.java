@@ -60,7 +60,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         // swap move item at the end into idx slot
         a[idx] = a[--n];
         a[n] = null;
-        if (n <= a.length / 4) resize(a.length / 2);
+        if (n <= a.length / 4) {
+            int capacity = Math.max(a.length / 2, INIT_CAPACITY);
+            resize(capacity);
+        }
         return item;
 
     }
@@ -116,12 +119,25 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     // unit testing (required)
     public static void main(String[] args) {
 
+        RandomizedQueue<String> rq = new RandomizedQueue<String>();
+
+        rq.enqueue("UIQLZUGBSC");
+        rq.dequeue();
+        rq.enqueue("XYWLRVHMGE");
+        rq.enqueue("PIPGXJKWTU");
+        rq.sample();
+        rq.dequeue();
+        rq.dequeue();
+        rq.enqueue("MZGUSWZNHO");
+        rq.dequeue();
+        rq.enqueue("MYMFOGGOLP");
+
         RandomizedQueue<Integer> queue = new RandomizedQueue<>();
+        int res;
         queue.enqueue(0);
         queue.enqueue(3);
         queue.enqueue(4);
         Iterator<Integer> iterator = queue.iterator();
-        int res;
         while (iterator.hasNext()) {
             res = iterator.next();
             StdOut.println(res);
@@ -135,17 +151,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         StdOut.println(iterator.hasNext());
         StdOut.println(iterator.next());
 
-        RandomizedQueue<Integer> rq = new RandomizedQueue<Integer>();
+        RandomizedQueue <Integer>rq2 = new RandomizedQueue<Integer>();
 
         for (int i = 0; i < 5; i++) {
-            rq.enqueue(i);
+            rq2.enqueue(i);
         }
 
-        StdOut.println("sample " + rq.sample());
-        StdOut.println("size " + rq.size());
+        StdOut.println("sample " + rq2.sample());
+        StdOut.println("size " + rq2.size());
 
-        while (rq.size() > 0) {
-            res = rq.dequeue();
+        while (rq2.size() > 0) {
+            res = rq2.dequeue();
             StdOut.println("dequeue " + res);
         }
 
