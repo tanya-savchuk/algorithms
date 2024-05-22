@@ -16,14 +16,12 @@ public class Deque<Item> implements Iterable<Item> {
 
     // construct an empty deque
     public Deque() {
-        first = new Node();
-        last = first;
-        n = 0;
+
     }
 
     // is the deque empty?
     public boolean isEmpty() {
-        return first == null;
+        return n == 0;
     }
 
     // return the number of items on the deque
@@ -34,49 +32,71 @@ public class Deque<Item> implements Iterable<Item> {
     // add the item to the front
     public void addFirst(Item item) {
         if (item == null) throw new IllegalArgumentException("item cannot be null");
-        Node oldFirst = first;
-        first = new Node();
-        first.item = item;
-        first.next = oldFirst;
-        if (oldFirst != null) oldFirst.prev = first;
-        if (isEmpty()) first = last;
+        if (isEmpty()) {
+            first = new Node();
+            first.item = item;
+            last = first;
+        }
+        else {
+            Node oldFirst = first;
+            first = new Node();
+            first.item = item;
+            oldFirst.prev = first;
+            first.next = oldFirst;
+        }
         n++;
-        if (size() == 1) last = first;
-
     }
 
     // add the item to the back
     public void addLast(Item item) {
         if (item == null) throw new IllegalArgumentException("item cannot be null");
-        Node oldLast = last;
-        last = new Node();
-        last.item = item;
-        last.next = null;
-        last.prev = oldLast;
-        if (isEmpty()) first = last;
-        else oldLast.next = last;
+        if (isEmpty()) {
+            last = new Node();
+            last.item = item;
+            first = last;
+        }
+        else {
+            Node oldLast = last;
+            last = new Node();
+            last.item = item;
+            last.next = null;
+            last.prev = oldLast;
+            oldLast.next = last;
+        }
         n++;
     }
 
     // remove and return the item from the front
     public Item removeFirst() {
         if (isEmpty()) throw new NoSuchElementException("cannot remove item from an empty deque");
-        n--;
         Item item = first.item;
-        first = first.next;
-        if (isEmpty()) last = null;
-        else first.prev = null;
+        if (size() == 1) {
+//            first = new Node();
+            first = null;
+            last = first;
+        }
+        else {
+            first = first.next;
+            first.prev = null;
+        }
+        n--;
         return item;
     }
 
     // remove and return the item from the back
     public Item removeLast() {
         if (isEmpty()) throw new NoSuchElementException("cannot remove item from an empty deque");
-        n--;
         Item item = last.item;
-        last = last.prev;
-        last.next = null;
-        if (isEmpty()) last = null;
+        if (size() == 1) {
+            last = null;
+            first = null;
+        }
+        else {
+            last = last.prev;
+            last.next = null;
+        }
+
+        n--;
         return item;
     }
 
@@ -92,7 +112,7 @@ public class Deque<Item> implements Iterable<Item> {
 
         @Override
         public boolean hasNext() {
-            return (current != null && current.next != null);
+            return (current != null);
         }
 
         @Override
@@ -112,6 +132,42 @@ public class Deque<Item> implements Iterable<Item> {
 
     // unit testing (required)
     public static void main(String[] args) {
+
+        Deque<Integer> deque = new Deque<>();
+        deque.addFirst(1);
+        Iterator<Integer> it = deque.iterator();  //    ==> [1]
+        StdOut.println(it.hasNext());
+        StdOut.println(it.next());
+        deque.removeLast(); //  ==> 1
+        it = deque.iterator();    //==> [null]
+        StdOut.println(it.hasNext());
+        StdOut.println(it.next());
+
+        deque = new Deque<>();
+        deque.addFirst(1);
+        deque.addFirst(2);
+        deque.removeLast();
+        deque.removeLast();
+        StdOut.println(deque.isEmpty());
+
+        deque = new Deque<>();
+        deque.addFirst(1);
+        deque.removeLast();
+        StdOut.println(deque.isEmpty());
+
+        deque = new Deque<>();
+        deque.addLast(1);
+        deque.removeLast();
+        deque.addLast(3);
+        deque.removeLast();
+        StdOut.println(deque.isEmpty());
+
+        deque = new Deque<>();
+        deque.addLast(1);
+        deque.removeFirst();
+        deque.addLast(3);
+        deque.removeLast();
+        StdOut.println(deque.isEmpty());
 
         Deque<Integer> mydeq = new Deque<Integer>();
 
@@ -140,9 +196,10 @@ public class Deque<Item> implements Iterable<Item> {
 
         StdOut.println(mydeq.size());
 
-        for (int i = 0; i < 10; i++) {
-            mydeq.removeLast();
-            int res = mydeq.removeFirst();
+        for (int i = 0; i < 5; i++) {
+            int res = mydeq.removeLast();
+            StdOut.println(res);
+            res = mydeq.removeFirst();
             StdOut.println(res);
         }
 
